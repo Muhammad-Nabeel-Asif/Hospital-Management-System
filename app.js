@@ -3,8 +3,8 @@ const cookieParser = require("cookie-parser");
 
 const connectDB = require("./db/connect");
 const userRouter = require("./routes/userRoutes");
-// const hospitalRouter = require("./routes/hospitalRoutes");
-// const patientRouter = require("./routes/patientRoutes");
+const hospitalRouter = require("./routes/hospitalRoutes");
+const patientRouter = require("./routes/patientRoutes");
 // const doctorRouter = require("./routes/doctorRoutes");
 // const nurseRouter = require("./routes/nurseRoutes");
 // const appointmentRouter = require("./routes/appointmentRoutes");
@@ -23,8 +23,8 @@ app.use(cookieParser());
 
 // --- routes ---
 app.use("/api/v1/users", userRouter);
-// app.use("/api/v1/hospitals", hospitalRouter);
-// app.use("/api/v1/patients", patientRouter);
+app.use("/api/v1/hospitals", hospitalRouter);
+app.use("/api/v1/patients", patientRouter);
 // app.use("/api/v1/doctors", doctorRouter);
 // app.use("/api/v1/nurses", nurseRouter);
 // app.use("/api/v1/appointments", appointmentRouter);

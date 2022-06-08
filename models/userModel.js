@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
   dob: {
     type: Date,
     required: [true, "Please provide your date of birth"],
+    default: Date.now(),
   },
   role: {
     type: String,
