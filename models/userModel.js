@@ -4,34 +4,45 @@ const bcrypt = require("bcryptjs");
 const mongooseDateFormat = require("mongoose-date-format");
 
 const userSchema = new mongoose.Schema({
-  name: {
+  user_id: {
+    type: Number,
+    required: [true, "Please provide a user id"],
+  },
+  user_name: {
     type: String,
     required: [true, "Please provide your name!"],
   },
-  email: {
+  user_email: {
     type: String,
     required: [true, "Please provide your email"],
     validate: [validator.isEmail, "Please provide a valid email!"],
+    unique: true,
+    trim: true,
   },
-  address: {
-    type: String,
-    required: [true, "Please provide your address"],
-  },
-  dob: {
-    type: Date,
-    required: [true, "Please provide your date of birth"],
-    default: Date.now(),
-  },
-  role: {
-    type: String,
-    enum: ["user", "admin", "staff"],
-    default: "user",
-  },
-  password: {
+  user_password: {
     type: String,
     required: [true, "Please provide a password"],
     minlength: 8,
     select: false,
+  },
+  user_address: {
+    type: String,
+    required: [true, "Please provide your address"],
+  },
+  user_dob: {
+    type: Date,
+    required: [true, "Please provide your date of birth"],
+    default: Date.now(),
+  },
+  user_role: {
+    type: String,
+    required: [true, "Please provide user role"],
+    enum: ["user", "admin", "staff"],
+    default: "user",
+  },
+  user_role_description: {
+    type: String,
+    required: [true, "Please provide role description"],
   },
 });
 
@@ -40,7 +51,7 @@ userSchema.plugin(mongooseDateFormat);
 
 userSchema.pre("save", async function (next) {
   // Hashing the password
-  this.password = await bcrypt.hash(this.password, 12);
+  this.user_password = await bcrypt.hash(this.user_password, 12);
   next();
 });
 

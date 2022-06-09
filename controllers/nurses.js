@@ -1,24 +1,24 @@
-const Patient = require("../models/patientModel");
+const Nurse = require("../models/nurseModel");
 
-const addPatient = async (req, res) => {
+const addNurse = async (req, res) => {
   try {
-    const doc = await Patient.create(req.body);
+    const doc = await Nurse.create(req.body);
     res.status(201).json({ doc });
   } catch (error) {
     res.status(500).json({ status: "failed", msg: error });
   }
 };
 
-const editPatient = async (req, res) => {
-  const patientId = req.params.id;
+const editNurse = async (req, res) => {
+  const nurseId = req.params.id;
   try {
-    const doc = await Patient.findByIdAndUpdate(
-      patientId,
+    const doc = await Nurse.findByIdAndUpdate(
+      nurseId,
       {
-        patient_email: req.body.patient_email,
-        patient_mobile: req.body.patient_mobile,
-        patient_name: req.body.patient_name,
-        patient_id: req.body.patient_id,
+        nurse_name: req.body.nurse_name,
+        nurse_mobile: req.body.nurse_mobile,
+        nurse_email: req.body.nurse_email,
+        nurse_duty_hour: req.body.nurse_duty_hour,
       },
       {
         runValidators: true,
@@ -28,7 +28,7 @@ const editPatient = async (req, res) => {
     if (!doc) {
       return res.status(404).json({
         status: "failed",
-        msg: `No patient found with id : ${patientId}`,
+        msg: `No nurse found with id : ${nurseId}`,
       });
     }
     res.status(200).json({
@@ -38,20 +38,19 @@ const editPatient = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: "failed",
-      data: null,
-      msg: error,
+      error,
     });
   }
 };
 
-const deletePatient = async (req, res) => {
-  const patientId = req.params.id;
+const deleteNurse = async (req, res) => {
+  const nurseId = req.params.id;
   try {
-    const doc = await Patient.findByIdAndDelete(patientId);
+    const doc = await Nurse.findByIdAndDelete(nurseId);
     if (!doc) {
       return res.status(404).json({
         status: "failed",
-        msg: `No patient found with id : ${patientId}`,
+        msg: `No nurse found with id : ${nurseId}`,
       });
     }
     res.status(204).json({
@@ -67,14 +66,14 @@ const deletePatient = async (req, res) => {
   }
 };
 
-const searchPatient = async (req, res) => {
-  const patientId = req.params.id;
+const searchNurse = async (req, res) => {
+  const nurseId = req.params.id;
   try {
-    const doc = await Patient.findById(patientId);
+    const doc = await Nurse.findById(nurseId);
     if (!doc) {
       return res.status(404).json({
         status: "failed",
-        msg: `No patient found with id : ${patientId}`,
+        msg: `No nurse found with id : ${nurseId}`,
       });
     }
     res.status(200).json({
@@ -91,8 +90,8 @@ const searchPatient = async (req, res) => {
 };
 
 module.exports = {
-  addPatient,
-  editPatient,
-  deletePatient,
-  searchPatient,
+  addNurse,
+  editNurse,
+  deleteNurse,
+  searchNurse,
 };

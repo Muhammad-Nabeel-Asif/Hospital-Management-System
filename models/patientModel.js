@@ -24,6 +24,7 @@ const patientSchema = new mongoose.Schema({
   patient_name: {
     type: String,
     required: [true, "Please provide patient name"],
+    unique: true,
   },
 });
 

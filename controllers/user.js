@@ -1,11 +1,10 @@
-const mongoose = require("mongoose");
 const User = require("../models/userModel");
 
 const addUser = async (req, res) => {
   try {
     const user = await User.create(req.body);
     // Removing password before sending resposne to user
-    user.password = undefined;
+    user.user_password = undefined;
     res.status(201).json({ user });
   } catch (error) {
     res.status(500).json({ status: "failed", msg: error });

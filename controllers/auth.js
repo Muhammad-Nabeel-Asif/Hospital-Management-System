@@ -21,7 +21,8 @@ const createSendToken = (user, statusCode, req, res) => {
   });
 
   // Remove password from output
-  user.password = undefined;
+  user.user_password = undefined;
+
   res.status(statusCode).json({
     status: "success",
     token,
@@ -34,12 +35,14 @@ const createSendToken = (user, statusCode, req, res) => {
 const signup = async (req, res, next) => {
   try {
     const user = await User.create({
-      name: req.body.name,
-      email: req.body.email,
-      address: req.body.address,
-      dob: req.body.dob,
-      role: req.body.role,
-      password: req.body.password,
+      user_id: req.body.user_id,
+      user_name: req.body.user_name,
+      user_email: req.body.user_email,
+      user_password: req.body.user_password,
+      user_address: req.body.user_address,
+      user_dob: req.body.user_dob,
+      user_role: req.body.user_role,
+      user_role_description: req.body.user_role_description,
     });
 
     if (!user) {
@@ -47,6 +50,7 @@ const signup = async (req, res, next) => {
         .status(400)
         .json({ status: "failed", msg: `can not sign up the user` });
     }
+
     createSendToken(user, 201, req, res);
   } catch (error) {
     return res.status(400).json({ status: "failed", msg: error });
@@ -55,15 +59,18 @@ const signup = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { user_email, user_password } = req.body;
+    if (!user_email || !user_password) {
       return res.status(401).json({
         status: "failed",
         msg: "Please provide email and password!",
       });
     }
-    const user = await User.findOne({ email }).select("+password");
-    if (!user || !(await user.checkPassword(password, user.password))) {
+    const user = await User.findOne({ user_email }).select("+user_password");
+    if (
+      !user ||
+      !(await user.checkPassword(user_password, user.user_password))
+    ) {
       return res.status(401).json({
         status: "failed",
         msg: "Incorrect email or password",
@@ -134,7 +141,7 @@ const protect = async (req, res, next) => {
 
 const restrictTo = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
+    if (!roles.includes(req.user.user_role)) {
       return res.status(401).json({
         status: "Missing roles",
         message: "You do not have permissions to perform this action",
