@@ -1,6 +1,7 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const sendEmail = require("../utils/email");
 
 const User = require("../models/userModel");
 
@@ -12,7 +13,6 @@ const signToken = (id) => {
 
 const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
-
   res.cookie("jwt", token, {
     expiresIn: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -153,42 +153,57 @@ const restrictTo = (...roles) => {
 
 const forgotPassword = async (req, res, next) => {
   // 1) Get user based on email
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ user_email: req.body.user_email });
   if (!user) {
-    return next(
-      res.status(404).json({
-        status: "Failed",
-        message: `No user found with this email address : ${req.body.email}`,
-      })
-    );
+    return res.status(403).json({
+      status: "Failed",
+      message: `No user found with this email address : ${req.body.user_email}`,
+    });
   }
 
-  // 2) Generate the random reset token
+  // 2) Generate the random reset token and add it to user document.
   const resetToken = user.createPasswordResetToken();
-  await user.save({ validateBeforeSave: false });
+
+  const updatedUser = await User.updateOne(
+    { _id: user._id },
+    {
+      $set: user,
+    }
+  );
 
   // 3) Send it to user's email
   try {
     const resetURL = `${req.protocol}://${req.get(
       "host"
     )}/api/v1/users/resetPassword/${resetToken}`;
-    await new Email(user, resetURL).sendPasswordReset();
 
+    const message = `Forgot your password? Submit a patch request with new password
+    to :${resetURL}.\n if you didn't forget your password, please ignore this email!`;
+
+    sendEmail({
+      email: user.user_email,
+      subject: "Your password reset token (valid for 10 min)",
+      message,
+    });
     res.status(200).json({
       status: "success",
       message: "Token sent to email!",
     });
   } catch (err) {
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-    await user.save({ validateBeforeSave: false });
-
-    return next(
-      res.status(404).json({
-        status: "Failed",
-        message: `No user found with this email address : ${req.body.email}`,
-      })
+    user.user_password_reset_expires = undefined;
+    user.user_password_reset_token = undefined;
+    // --- save the user again after removing fields ---
+    const updatedUserAfterRemovingFields = await User.updateOne(
+      { _id: user._id },
+      {
+        $set: user,
+      }
     );
+    return res.status(404).json({
+      status: "Failed",
+      message: `No user found with this email address : ${req.body.user_email}`,
+      error: err,
+    });
   }
 };
 
@@ -201,8 +216,7 @@ const resetPassword = async (req, res, next) => {
       .digest("hex");
 
     const user = await User.findOne({
-      passwordResetToken: hashedToken,
-      passwordResetExpires: { $gt: Date.now() },
+      user_password_reset_token: hashedToken,
     });
 
     // 2) If token has not expired, and there is user, set the new password
@@ -214,11 +228,19 @@ const resetPassword = async (req, res, next) => {
         })
       );
     }
-    user.password = req.body.password;
-    user.passwordConfirm = req.body.passwordConfirm;
+
+    user.user_password = req.body.password;
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
-    await user.save();
+
+    const updatedUser = await User.updateOne(
+      { user_id: user.user_id },
+      {
+        $set: user,
+      }
+    );
+
+    console.log(updatedUser);
 
     // 3) Log the user in, send JWT
     createSendToken(user, 200, req, res);

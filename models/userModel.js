@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const mongooseDateFormat = require("mongoose-date-format");
 
 const userSchema = new mongoose.Schema({
@@ -44,6 +45,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide role description"],
   },
+  user_password_reset_token: String,
+  user_password_reset_expires: Date,
 });
 
 // format: YYYY-MM-DD HH:mm:ss
@@ -60,6 +63,19 @@ userSchema.methods.checkPassword = async function (
   userPassword
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.user_password_reset_token = require("crypto")
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  this.user_password_reset_expires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
 };
 
 const User = mongoose.model("User", userSchema);

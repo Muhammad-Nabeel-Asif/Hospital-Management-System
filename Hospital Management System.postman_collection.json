@@ -1,0 +1,967 @@
+{
+	"info": {
+		"_postman_id": "be91777b-6cee-4837-b9b8-8830ee26fce8",
+		"name": "Hospital Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": 2,\r\n    \"user_name\": \"Admin created -> USER 2\",\r\n    \"user_email\": \"new_user2_@gmail.com\",\r\n    \"user_password\": \"test1234\",\r\n    \"user_address\": \"LOCATION 2\",\r\n    \"user_dob\": \"1957-5-10\",\r\n    \"user_role\": \"user\",\r\n    \"user_role_description\": \"user role description field\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users/629f6aa531cb05716ba3f953",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"629f6aa531cb05716ba3f953"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Added by Admin -> User\",\r\n    \"address\": \"Karachi\",    \r\n    \"role\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/629f6aa531cb05716ba3f953",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"629f6aa531cb05716ba3f953"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users/629f6aa531cb05716ba3f953",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"629f6aa531cb05716ba3f953"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"jwt\", pm.response.json().token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": 1,\r\n    \"user_name\": \"admin 1\",\r\n    \"user_email\": \"admin1@gmail.com\",\r\n    \"user_password\": \"test1234\",\r\n    \"user_address\": \"admin 1 address\",\r\n    \"user_dob\": \"1999-12-28\",\r\n    \"user_role\": \"admin\",\r\n    \"user_role_description\": \"admin role description field\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/signup",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log In",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_email\": \"admin1@gmail.com\",\r\n    \"user_password\": \"test1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log out",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_email\": \"admin1@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/forgotPassword",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"forgotPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/resetPassword/851d138f0d15ea1bc79982622755da9276fe00f26aec67e3ce70c90b48e9a282",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"resetPassword",
+								"851d138f0d15ea1bc79982622755da9276fe00f26aec67e3ce70c90b48e9a282"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hospitals",
+			"item": [
+				{
+					"name": "Add Hospitals",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"hospital_id\": 3,\r\n    \"hospital_doctor_id\": 30,\r\n    \"hospital_name\": \"New XYZ Hospital\",\r\n    \"hospital_place\": \"XYZ\",\r\n    \"hospital_type\": \"Heart Hospital\",\r\n    \"hospital_description\": \"We repair hearts at low rates\",\r\n    \"hospital_address\": \"DHA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/hospitals",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"hospitals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Hospitals",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Doctor 2\",\r\n    \"type\": \"Heart Doctor\",\r\n    \"description\": \"new description\",\r\n    \"place\": \"changed place to NEW\",\r\n    \"address\": \"Aiman Hospital\",\r\n    \"doctor_id\": \"456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/hospitals/62a0a08dc3df8646f6b7a2b9",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"hospitals",
+								"62a0a08dc3df8646f6b7a2b9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Hospitals",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/hospitals/62a0a08dc3df8646f6b7a2b9",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"hospitals",
+								"62a0a08dc3df8646f6b7a2b9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Hospitals",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/hospitals/62a0a3b3854b10f928db944a",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"hospitals",
+								"62a0a3b3854b10f928db944a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patients",
+			"item": [
+				{
+					"name": "Add Patient",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"patient_name\": \"patient\",\r\n    \"patient_id\": 2,\r\n    \"patient_mobile\": \"0300-0000000\",\r\n    \"patient_email\": \"test_patient_1@gmail.com\",\r\n    \"patient_password\": \"test123\",\r\n    \"patient_address\": \"Karachi, Pakistan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/patients",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Patient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/patients/62a191a22f71710dae53708c",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"patients",
+								"62a191a22f71710dae53708c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Patient",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"patient_id\": 1,\r\n    \"patient_mobile\": \"0300-0000000\",\r\n    \"patient_email\": \"test_patient_1@gmail.com\",\r\n    \"patient_password\": \"test123\",\r\n    \"patient_address\": \"Karachi, Pakistan\",\r\n    \"patient_name\": \"patient 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/patients/62a191a22f71710dae53708c",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"patients",
+								"62a191a22f71710dae53708c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Patient",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/patients/62a0b632861c268801db3a4c",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"patients",
+								"62a0b632861c268801db3a4c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Doctors",
+			"item": [
+				{
+					"name": "Add Doctor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"doctor_id\": 1,\r\n    \"doctor_name\": \"Mr Doctor 1\",\r\n    \"doctor_specialist\": \"Neurosurgeon\",\r\n    \"doctor_mobile\": \"0300-0000000\",\r\n    \"doctor_email\": \"doctor_1_@gmail.com\",\r\n    \"doctor_password\": \"test123\",\r\n    \"doctor_address\": \"Lahore, Pakistan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/doctors",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"doctors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Doctor",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"doctor_mobile\": \"0399-9999999\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/doctors/62a196f364b61ff28807bcad",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"doctors",
+								"62a196f364b61ff28807bcad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Doctor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/doctors/62a196f364b61ff28807bcad",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"doctors",
+								"62a196f364b61ff28807bcad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Doctor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/doctors/62a196c064b61ff28807bcab",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"doctors",
+								"62a196c064b61ff28807bcab"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Nurses",
+			"item": [
+				{
+					"name": "Add Nurses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nurse_name\": \"Nurse 4\",\r\n    \"nurse_id\": 4,\r\n    \"nurse_duty_hour\": \"6\",\r\n    \"nurse_mobile\": \"0323-3423123\",\r\n    \"nurse_email\": \"nurse_4_@gmail.com\",\r\n    \"nurse_password\": \"test123\",\r\n    \"nurse_address\": \"Bahria, Lahore\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/nurses",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"nurses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Nurse",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/nurses/62a1a40af55d08834180fa36",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"nurses",
+								"62a1a40af55d08834180fa36"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Nurse",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nurse_name\": \"Nurse 2\",\r\n    \"nurse_duty_hour\": \"12\",\r\n    \"nurse_mobile\": \"0332-0000000\",\r\n    \"nurse_email\": \"changedEmail@yahoo.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/nurses/62a1a3a4f55d08834180fa34",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"nurses",
+								"62a1a3a4f55d08834180fa34"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Nurse",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/nurses/62a1a3a4f55d08834180fa34",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"nurses",
+								"62a1a3a4f55d08834180fa34"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appointments",
+			"item": [
+				{
+					"name": "Add Appointments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"appointment_id\": 656,\r\n    \"appointment_doctor_id\": 234,\r\n    \"appointment_number\": 12,\r\n    \"appointment_type\": \"Day Appointment\",\r\n    \"appointment_date\": \"2022-8-23 03:30:15\",\r\n    \"appointment_description\": \"appointment description abc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/appointments",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Appointments",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/appointments/62a1c6ac9956591b13de5b87",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appointments",
+								"62a1c6ac9956591b13de5b87"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Appointments",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"appointment_id\": 13,\r\n    \"appointment_doctor_id\": 235,\r\n    \"appointment_number\": 12,\r\n    \"appointment_type\": \"Cough\",\r\n    \"appointment_date\": \"2022-6-20 03:30:15\",\r\n    \"appointment_description\": \"appointment description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/appointments/62a1c98c9956591b13de5b8b",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appointments",
+								"62a1c98c9956591b13de5b8b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Appointments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/appointments/62a1c98c9956591b13de5b8b",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"appointments",
+								"62a1c98c9956591b13de5b8b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Medicines",
+			"item": [
+				{
+					"name": "Add Medicines",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"medicine_id\": 3,\r\n    \"medicine_name\": \"Relaxin\",\r\n    \"medicine_company\": \"GHI Company\",\r\n    \"medicine_composition\": \"Neutral_composition\",\r\n    \"medicine_cost\": \"5,000\",\r\n    \"medicine_type\": \"sluggish\",\r\n    \"medicine_dose\": \"1/2 per day\",\r\n    \"medicine_description\": \"Super High dose medicine, be carefull !\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/medicines",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"medicines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Medicines",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/medicines/62a1d6f11180c7b0655bf304",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"medicines",
+								"62a1d6f11180c7b0655bf304"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Medicines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/medicines/62a1d6a41180c7b0655bf302",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"medicines",
+								"62a1d6a41180c7b0655bf302"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Medicines",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"medicine_id\": 2,\r\n    \"medicine_name\": \"Tormax\",\r\n    \"medicine_company\": \"DEF Company\",\r\n    \"medicine_composition\": \"Base_composition\",\r\n    \"medicine_cost\": \"3,000\",\r\n    \"medicine_type\": \"Relief med\",\r\n    \"medicine_dose\": \"1 per day\",\r\n    \"medicine_description\": \"High dose medicine\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/medicines/62a1d6a41180c7b0655bf302",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"medicines",
+								"62a1d6a41180c7b0655bf302"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
